@@ -1,13 +1,14 @@
 package tests;
 
+import dto.Account;
+import dto.AccountFactory;
 import org.testng.annotations.Test;
 
 
 public class AccountTest extends BaseTest {
 
-    @Test
+    @Test(description = "Создание аккаунта с параметрами")
     public void checkCreateAccount() {
-
         loginPage.login();
         homePage.isOpened();
         accountsPage.open();
@@ -24,5 +25,17 @@ public class AccountTest extends BaseTest {
                 "High", "Gold", "220141", "220141",
                 "Maybe", "Yes", "TMS test");
         newAccountModal.clickSaveButton();
+    }
+    @Test(description = "Создание аккаунта, используя value of object")
+    public void checkCreateAccountWithValueObject() {
+        loginPage.login();
+        homePage.isOpened();
+        accountsPage.open()
+                .isOpened();
+        newAccountModal.open()
+                .isOpened();
+        Account account = AccountFactory.createTestAccount();
+        newAccountModal.createAccountWithValueOfObject(account)
+                .clickSaveButton();
     }
 }

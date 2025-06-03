@@ -15,12 +15,13 @@ public class AccountsPage extends BasePage {
         super(driver);
     }
 
-    public void open() {
+    public AccountsPage open() {
         driver.get(ACCOUNTS_PAGE);
+        return this;
     }
 
-    public boolean isOpened() {
+    public AccountsPage isOpened() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(TITLE));
-        return true;
+        return this;
     }
 }
