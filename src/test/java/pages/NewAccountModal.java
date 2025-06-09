@@ -2,9 +2,7 @@ package pages;
 
 import dto.Account;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import wrappers.Checkbox;
 import wrappers.Input;
@@ -27,12 +25,6 @@ public class NewAccountModal extends BasePage {
     public NewAccountModal isOpened() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(TITLE));
         return this;
-    }
-
-    public void scrollPage() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        WebElement scrollContainer = driver.findElement(By.cssSelector(".actionBody"));
-        js.executeScript("arguments[0].scrollTop = arguments[0].scrollTop +200;", scrollContainer);
     }
 
     public NewAccountModal createAccount(String name, String phone, String fax, String rating,

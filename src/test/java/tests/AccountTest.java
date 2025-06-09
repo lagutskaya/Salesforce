@@ -26,6 +26,7 @@ public class AccountTest extends BaseTest {
                 "Maybe", "Yes", "TMS test");
         newAccountModal.clickSaveButton();
     }
+
     @Test(description = "Создание аккаунта, используя value of object")
     public void checkCreateAccountWithValueObject() {
         loginPage.login();

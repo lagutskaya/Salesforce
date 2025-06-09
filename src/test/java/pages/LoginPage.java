@@ -13,10 +13,11 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    public void login() {
+    public LoginPage login() {
         driver.get(BASE_URL);
         driver.findElement(USERNAME).sendKeys("tborodich@tms.sandbox");
         driver.findElement(PASSWORD).sendKeys("Password002!");
         driver.findElement(LOGIN_BUTTON).click();
+        return this;
     }
 }

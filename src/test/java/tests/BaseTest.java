@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class BaseTest {
 
     WebDriver driver;
-    SoftAssert softAssert = new SoftAssert();
+    SoftAssert softAssert;
     NewAccountModal newAccountModal;
     LoginPage loginPage;
     HomePage homePage;
