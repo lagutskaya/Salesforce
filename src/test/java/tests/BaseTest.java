@@ -1,5 +1,8 @@
 package tests;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,28 +12,33 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
-import pages.AccountsPage;
-import pages.HomePage;
-import pages.LoginPage;
-import pages.NewAccountModal;
-import utils.AllureUtils;
+import pages.*;
 import utils.TestListener;
 
 import java.time.Duration;
 import java.util.HashMap;
 
+import static utils.AllureUtils.takeScreenshot;
+
+@Data
+@AllArgsConstructor
+@Builder
 @Listeners(TestListener.class)
 public class BaseTest {
-
     WebDriver driver;
+    WebDriverWait wait;
     SoftAssert softAssert;
     NewAccountModal newAccountModal;
-    LoginPage loginPage;
+    AccountListPage accountListPage;
     HomePage homePage;
+    LoginPage loginPage;
     AccountsPage accountsPage;
-    WebDriverWait wait;
 
-    @BeforeMethod(alwaysRun = true)
+    String user = System.getProperty("user");
+    String password = System.getProperty("password");
+
+    @Parameters({"browser"})
+    @BeforeMethod(alwaysRun = true, description = "Открытие браузера")
     public WebDriver setup(@Optional("chrome") String browser, ITestContext context) {
         if (browser.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
@@ -50,18 +58,19 @@ public class BaseTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.manage().window().maximize();
         softAssert = new SoftAssert();
-        accountsPage = new AccountsPage(driver);
         newAccountModal = new NewAccountModal(driver);
+        accountListPage = new AccountListPage(driver);
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);
+        accountsPage = new AccountsPage(driver);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         return driver;
     }
 
     @AfterMethod(alwaysRun = true, description = "Закрытие браузера")
     public void tearDown(ITestResult result) {
-        if (result.FAILURE == result.getStatus()) {
-            AllureUtils.takeScreenshot(driver);
+        if (ITestResult.FAILURE == result.getStatus()) {
+            takeScreenshot(driver);
         }
         driver.quit();
     }
