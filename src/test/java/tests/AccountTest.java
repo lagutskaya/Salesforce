@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 
 public class AccountTest extends BaseTest {
-    
+
     @Test
     public void checkCreateAccountFull() {
         loginPage.open()
