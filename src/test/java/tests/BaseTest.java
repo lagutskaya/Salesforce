@@ -1,8 +1,6 @@
 package tests;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -20,9 +18,7 @@ import java.util.HashMap;
 
 import static utils.AllureUtils.takeScreenshot;
 
-@Data
-@AllArgsConstructor
-@Builder
+@Log4j2
 @Listeners(TestListener.class)
 public class BaseTest {
     WebDriver driver;
@@ -34,13 +30,14 @@ public class BaseTest {
     LoginPage loginPage;
     AccountsPage accountsPage;
 
-    String user = System.getProperty("user");
-    String password = System.getProperty("password");
+    String user = System.getProperty("user", PropertyReader.getProperty("SF_LOGIN"));
+    String password = System.getProperty("password", PropertyReader.getProperty("SF_PASSWORD"));
 
     @Parameters({"browser"})
     @BeforeMethod(alwaysRun = true, description = "Открытие браузера")
     public WebDriver setup(@Optional("chrome") String browser, ITestContext context) {
         if (browser.equalsIgnoreCase("chrome")) {
+            log.info("Tests run in chrome browser");
             ChromeOptions options = new ChromeOptions();
             HashMap<String, Object> chromePrefs = new HashMap<>();
             chromePrefs.put("credentials_enable_service", false);
@@ -52,6 +49,7 @@ public class BaseTest {
             options.addArguments("--disable-infobars");
             driver = new ChromeDriver(options);
         } else if (browser.equalsIgnoreCase("firefox")) {
+            log.info("Tests run in firefox browser");
             driver = new FirefoxDriver();
         }
         context.setAttribute("driver", driver);
